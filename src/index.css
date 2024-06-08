@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Raleway", sans-serif;
+}
+
+main {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+
+#month {
+  font-size: 30px;
+  font-weight: 500;
+  text-align: center;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  border-radius: 10px;
+  background-color: white;
+}
+
+p {
+  background-color: white;
+}
+
+.boxes {
+  width: 70vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
+.box {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+}
+
+section {
+  transition: height 0.5s ease;
+  overflow-y: auto;
+}
+
+section p {
+  background: none;
+}
+
+
+
+/* Theme Switcher */
+.theme-switcher {
+  position: absolute;
+  top: 0px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked+.slider {
+  background-color: #444;
+}
+
+input:checked+.slider:before {
+  transform: translateX(26px);
+}
+
+/* Light Theme */
+.light {
+  background: #efefef;
+  color: black;
+}
+
+.light .box {
+  background-color: white;
+}
+
+/* Dark Theme */
+.dark {
+  background: #333;
+  color: white;
+}
+
+.dark .box {
+  background-color: #444;
+}
