@@ -97,7 +97,7 @@ function MainPage({ theme, toggleTheme }) {
                 <Link to={`/expenses/${monthYear}`}>
                   <p className='font-semibold h-16 w-24 text-center text-xl flex justify-center items-center'>{monthYear}</p>
                 </Link>
-                <button className='border-2 border-red-400 px-2 rounded-md '
+                <button className='bg-red-500 text-white font-medium px-2 rounded-md '
                   onClick={() => handleDelete(monthYear)}>
                   Delete
                 </button>

@@ -56,7 +56,7 @@ function ExpensesPage({ theme, toggleTheme }) {
     return (
         <div className={theme} style={{ height: '100vh' }}> {/* Apply the current theme */}
             <nav className="bg-violet-500 flex w-screen justify-between px-7 h-16 items-center z-50">
-                <div className=' flex h-fit gap-5'>
+                <div className='flex h-fit gap-5'>
                     <div className='w-10'><img src="/wallet.png" alt="#" /></div>
                     <h1 className='text-3xl hidden sm:block font-semibold'>BUDGETbook</h1>
                 </div>
@@ -68,7 +68,7 @@ function ExpensesPage({ theme, toggleTheme }) {
             </nav>
             <section className="w-[95vw] m-auto sm:w-[65vw] mt-3">
                 <button onClick={() => navigate(-1)}><img src={back} alt="back-button" className='h-9' /></button> {/* Navigate back to the previous page */}
-                <h2 className='text-center font-semibold text-xl mx-5 mb-5 lg:text-3xl lg:mb-8'>Note down your Expenses - <span className='bg-violet-500 text-white px-2 rounded-lg'>{monthYear}</span></h2>
+                <h2 className='text-center font-semibold text-xl mx-5 mb-5 lg:text-3xl lg:mb-8'>Note down your Expenses - <br /><span className='bg-violet-500 text-white px-2 rounded-lg'>{monthYear}</span></h2>
 
                 {/* Inner-Box */}
                 <div className="innerContent lg:w-fit lg:m-auto">
@@ -101,20 +101,24 @@ function ExpensesPage({ theme, toggleTheme }) {
                             <button className='w-36 border-[3px] border-violet-500 rounded-md font-medium text-lg lg:w-20' onClick={handleAddExpense}>Save</button>
                         </div>
                     </div>
-                    <div className="container bg-red-400 mt-5">
-                        <ul className='border-2 border-y-lime-400'>
+                    <div className="container mt-7">
+                        <ul className='list h-[48vh] lg:h-[52vh] lg:w-4/5 m-auto overflow-y-scroll'>
                             {expenses.map((exp, index) => (
-                                <li className='border-2 border-y-lime-400 flex justify-between items-center p-2' key={index}>
-                                    <span>{exp.date} - {exp.expense} - ${exp.amount}</span>
-                                    <div>
-                                        <button className='mr-2 p-1 bg-yellow-400 rounded' onClick={() => handleEditExpense(index)}>Edit</button>
-                                        <button className='p-1 bg-red-400 rounded' onClick={() => handleDeleteExpense(index)}>Delete</button>
+                                <li className='h-fit border-2 rounded-md mb-1 border-violet-500 p-2 flex flex-col' key={index}>
+                                    <span>
+                                        <span className='text-white bg-violet-400 font-medium py-1 px-2 rounded-md text-lg'>{exp.date}</span>
+                                        <span className='ml-2 text-lg font-medium'>{exp.expense}</span>
+                                        <span className='font-semibold text-lg ml-2 text-red-500'>₹{exp.amount}</span>
+                                    </span>
+                                    <div className="flex justify-start mt-2">
+                                        <button className='mr-2 w-20 text-white bg-violet-500 rounded' onClick={() => handleEditExpense(index)}>Edit</button>
+                                        <button className='w-20 border-2 border-violet-500 rounded' onClick={() => handleDeleteExpense(index)}>Delete</button>
                                     </div>
                                 </li>
                             ))}
                         </ul>
-                        <div className="totalAmount p-2 mt-2 text-lg font-bold">
-                            Total Amount: ${totalAmount.toFixed(2)}
+                        <div className="totalAmount p-2 mt-2 text-lg font-bold text-center">
+                            Your Monthly Expense: <span className='text-red-500'>₹{totalAmount.toFixed(2)}</span>
                         </div>
                     </div>
                 </div>
