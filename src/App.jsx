@@ -32,9 +32,11 @@ function MainPage({ theme, toggleTheme }) {
   };
 
   const handleDelete = (monthYear) => {
-    // Delete the selected month-year and remove associated expenses from localStorage
-    setSelectedMonths(selectedMonths.filter((month) => month !== monthYear));
-    localStorage.removeItem(`expenses-${monthYear}`);
+    if (window.confirm(`Are you sure you want to delete ${monthYear}?`)) {
+      // Delete the selected month-year and remove associated expenses from localStorage
+      setSelectedMonths(selectedMonths.filter((month) => month !== monthYear));
+      localStorage.removeItem(`expenses-${monthYear}`);
+    }
   };
 
   return (
@@ -97,10 +99,13 @@ function MainPage({ theme, toggleTheme }) {
                 <Link to={`/expenses/${monthYear}`}>
                   <p className='font-semibold h-16 w-24 text-center text-xl flex justify-center items-center'>{monthYear}</p>
                 </Link>
-                <button className='bg-red-500 text-white font-medium px-2 rounded-md '
-                  onClick={() => handleDelete(monthYear)}>
+                <motion.button
+                  className='bg-red-500 text-white font-medium px-2 rounded-md'
+                  onClick={() => handleDelete(monthYear)}
+                  whileTap={{ scale: 0.95 }} // Slightly reduce the button size when active
+                >
                   Delete
-                </button>
+                </motion.button>
               </div>
             </motion.div>
           ))}
