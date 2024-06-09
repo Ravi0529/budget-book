@@ -231,10 +231,10 @@ function ExpensesPage({ theme, toggleTheme }) {
                                 </li>
                             ))}
                         </ul>
-                        <div className="totalAmount mt-1 text-lg font-bold text-center">
+                        <div className="totalAmount text-lg font-bold text-center">
                             Monthly Spending: <span className='text-red-500'>₹{formatNumberToIndianSystem(totalAmount.toFixed(2))}</span>
                         </div>
-                        <div className="walletAmount mt-1 text-lg font-bold text-center">
+                        <div className="walletAmount text-lg font-bold text-center">
                             Leftover Wallet Balance:
                             <span className='text-green-500'>
                                 {walletAmount ? ` ₹${formatNumberToIndianSystem(remainingAmount.toFixed(2))}` : ' -'}
