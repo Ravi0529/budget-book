@@ -21,15 +21,27 @@ function ExpensesPage({ theme, toggleTheme }) {
     });
     const [editIndex, setEditIndex] = useState(null); // Track the index of the expense being edited
     const [sortMethod, setSortMethod] = useState('date'); // Default sorting method
-
-    const handleDateChange = (event) => {
-        setSelectedDate(event.target.value);
-    };
+    const [showWalletInput, setShowWalletInput] = useState(false); // Show/Hide wallet amount input
+    const [walletAmount, setWalletAmount] = useState(() => {
+        // Load saved wallet amount from localStorage
+        const savedWalletAmount = localStorage.getItem(`wallet-${monthYear}`);
+        return savedWalletAmount ? parseFloat(savedWalletAmount) : 0;
+    });
+    const [inputWalletAmount, setInputWalletAmount] = useState('');
 
     useEffect(() => {
         // Save expenses to localStorage whenever they change
         localStorage.setItem(`expenses-${monthYear}`, JSON.stringify(expenses));
     }, [expenses, monthYear]);
+
+    useEffect(() => {
+        // Save wallet amount to localStorage whenever it changes
+        localStorage.setItem(`wallet-${monthYear}`, walletAmount);
+    }, [walletAmount, monthYear]);
+
+    const handleDateChange = (event) => {
+        setSelectedDate(event.target.value);
+    };
 
     const handleAddExpense = () => {
         if (expense && amount && selectedDate) {
@@ -74,6 +86,13 @@ function ExpensesPage({ theme, toggleTheme }) {
         setExpenses((prevExpenses) => prevExpenses.filter((_, i) => i !== index));
         setTotalAmount((prevTotal) => prevTotal - amountToDeduct); // Update total amount
     };
+
+    const handleAddWalletAmount = () => {
+        setWalletAmount(parseFloat(inputWalletAmount));
+        setShowWalletInput(false);
+    };
+
+    const remainingAmount = walletAmount - totalAmount;
 
     // Function to format numbers according to the Indian numbering system
     const formatNumberToIndianSystem = (num) => {
@@ -158,7 +177,32 @@ function ExpensesPage({ theme, toggleTheme }) {
                                 <option value="date">Sort by Date</option>
                                 <option value="amount">Sort by Amount</option>
                             </select>
+                            <motion.button
+                                className="ml-2 bg-violet-500 text-white px-8 py-1 rounded-md"
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => setShowWalletInput(true)}
+                            >
+                                Your Wallet
+                            </motion.button>
                         </div>
+                        {showWalletInput && (
+                            <div className="absolute top-80 w-[94vw] lg:w-[40vw] flex flex-col items-center bg-gray-100 shadow-2xl border-4 border-violet-500 rounded-lg p-4">
+                                <input
+                                    type="number"
+                                    className='w-40 h-9 rounded-md border-2 border-violet-500 text-black'
+                                    value={inputWalletAmount}
+                                    onChange={(e) => setInputWalletAmount(e.target.value)}
+                                    placeholder="Enter wallet amount"
+                                />
+                                <motion.button
+                                    className='mt-2 bg-violet-500 text-white px-4 py-1 rounded-md'
+                                    onClick={handleAddWalletAmount}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    Save
+                                </motion.button>
+                            </div>
+                        )}
                         <ul className='list h-[46vh] lg:h-[50vh] lg:w-4/5 m-auto overflow-y-scroll'>
                             {sortedExpenses.map((exp, index) => (
                                 <li className='h-fit border-2 rounded-md mb-1 border-violet-500 p-2 flex flex-col' key={index}>
@@ -187,8 +231,14 @@ function ExpensesPage({ theme, toggleTheme }) {
                                 </li>
                             ))}
                         </ul>
-                        <div className="totalAmount p-2 mt-2 text-lg font-bold text-center">
-                            Your Monthly Expense: <span className='text-red-500'>₹{formatNumberToIndianSystem(totalAmount.toFixed(2))}</span>
+                        <div className="totalAmount mt-1 text-lg font-bold text-center">
+                            Monthly Spending: <span className='text-red-500'>₹{formatNumberToIndianSystem(totalAmount.toFixed(2))}</span>
+                        </div>
+                        <div className="walletAmount mt-1 text-lg font-bold text-center">
+                            Leftover Wallet Balance:
+                            <span className='text-green-500'>
+                                {walletAmount ? ` ₹${formatNumberToIndianSystem(remainingAmount.toFixed(2))}` : ' -'}
+                            </span>
                         </div>
                     </div>
                 </div>
