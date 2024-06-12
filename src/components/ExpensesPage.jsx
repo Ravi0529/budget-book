@@ -49,14 +49,16 @@ function ExpensesPage({ theme, toggleTheme }) {
             if (editIndex !== null) {
                 // If editing, update the existing expense
                 const updatedExpenses = [...expenses];
+                const oldAmount = updatedExpenses[editIndex].amount;
                 updatedExpenses[editIndex] = newExpense;
                 setExpenses(updatedExpenses);
+                setTotalAmount((prevTotal) => prevTotal - oldAmount + newExpense.amount); // Update total amount correctly
                 setEditIndex(null); // Clear the edit index
             } else {
                 // If not editing, add new expense to the list
                 setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
+                setTotalAmount((prevTotal) => prevTotal + newExpense.amount); // Update total amount
             }
-            setTotalAmount((prevTotal) => prevTotal + newExpense.amount); // Update total amount
             setExpense(''); // Clear the input field
             setAmount(''); // Clear the amount field
             setSelectedDate(''); // Clear the selected date
@@ -74,6 +76,7 @@ function ExpensesPage({ theme, toggleTheme }) {
         setSelectedDate(expenseToEdit.date);
         setEditIndex(index); // Set the index of the expense being edited
     };
+
 
     const confirmDeleteExpense = (index) => {
         if (window.confirm('Are you sure you want to delete this expense?')) {
@@ -213,8 +216,7 @@ function ExpensesPage({ theme, toggleTheme }) {
                                     </span>
                                     <div className="flex justify-start mt-2">
                                         <motion.button
-                                            className='mr-2 w-20 text-white .bg-violet-500
-                                            bg-violet-500 rounded'
+                                            className='mr-2 w-20 text-white bg-violet-500 rounded'
                                             whileTap={{ scale: 0.95 }} // Slightly reduce the button size when active
                                             onClick={() => handleEditExpense(index)}
                                         >
